@@ -19,19 +19,15 @@ router = APIRouter(
 @log(__name__)
 def get_author_list(keywords):
     try:
-        # recommended_author = None
-        # pubmed_id =None
-        # print("type ",type(keywords))
-        # list1 = keywords.split(",")
-        list1 =[]
+        user_keywords =[]
+        #converting string to list from user input
         for i in range(len(keywords.split(","))):
-            list1.append(keywords.split(",")[i].replace("[", "").replace('"', "").replace(']', "").lstrip())
-        pubmed_id, value, doi = match_paper(list1)
-        print("pubmed_id ",pubmed_id)
+            user_keywords.append(keywords.split(",")[i].replace("[", "").replace('"', "").replace(']', "").lstrip())
+        pubmed_id, doi = match_paper(user_keywords) # here pubmed_id means PMCID
         if pubmed_id == None:
             print("not found")
         else:
-            recommended_author = top_author_list(pubmed_id,list1)
+            recommended_author = top_author_list(pubmed_id,user_keywords)
 
         return doi ,recommended_author
     except:
